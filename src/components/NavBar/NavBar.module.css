@@ -1,0 +1,44 @@
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  background: var(--color-surface);
+  border-bottom: 2px solid var(--color-border);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--color-sunshine);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.brand:hover {
+  color: var(--color-daiquiri);
+  text-decoration: none;
+}
+
+.links {
+  display: flex;
+  gap: var(--space-5);
+}
+
+.links a {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s;
+  padding-bottom: 2px;
+}
+
+.links a:hover {
+  color: var(--color-text);
+}
+
+.active {
+  color: var(--color-daiquiri) !important;
+  border-bottom: 2px solid var(--color-daiquiri);
+}

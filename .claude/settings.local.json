@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create:*)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(magick --version)",
+      "Bash(ffmpeg -version)",
+      "Bash(python -c \"import pillow_heif; print\\(''pillow_heif ok''\\)\")",
+      "Bash(python -c \"from PIL import Image; print\\(''PIL ok''\\)\")",
+      "Bash(pip install:*)",
+      "Bash(python:*)"
+    ]
+  }
+}

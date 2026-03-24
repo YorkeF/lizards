@@ -1,0 +1,126 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Brand palette */
+  --color-rosin:          #31331d;  /* dark olive — Rosin */
+  --color-daiquiri:       #cbd378;  /* yellow-green — Daiquiri Green */
+  --color-sunshine:       #fede8b;  /* warm yellow — Sunshine */
+
+  /* Surface scale (dark mode built from Rosin) */
+  --color-bg:             #191b0c;
+  --color-surface:        #252912;
+  --color-surface-raised: #31331d;  /* Rosin */
+  --color-border:         #484d24;
+
+  /* Text */
+  --color-text:           #f2ead0;
+  --color-text-muted:     #8f9c52;
+  --color-text-on-accent: #1e2010;
+
+  /* Accent */
+  --color-accent:         #cbd378;  /* Daiquiri Green */
+  --color-accent-dark:    #a3aa58;
+  --color-highlight:      #fede8b;  /* Sunshine — prices, badges */
+
+  /* Status */
+  --color-success:        #a8c850;
+  --color-danger:         #c0392b;
+
+  /* Type */
+  --font-display: 'Fredoka One', 'Nunito', system-ui, sans-serif;
+  --font-body:    'Nunito', system-ui, sans-serif;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-8: 48px;
+  --space-10: 64px;
+
+  /* Shape */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--color-daiquiri);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-sunshine);
+  text-decoration: none;
+}
+
+h1, h2, h3, h4 {
+  margin: 0 0 var(--space-4);
+  line-height: 1.2;
+  font-family: var(--font-display);
+  font-weight: 400; /* Fredoka One is inherently bold */
+}
+
+p {
+  margin: 0 0 var(--space-4);
+}
+
+button {
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-4);
+  transition: background 0.15s, opacity 0.15s, transform 0.1s;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+input, select, textarea {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+  border-color: var(--color-accent);
+}
+
+label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
