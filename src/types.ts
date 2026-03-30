@@ -12,7 +12,7 @@ export interface Lizard {
   price: number | null;
   available: boolean;
   description: string;
-  photo: string;
+  photos: string[];
   obtainedFrom: string;
 }
 

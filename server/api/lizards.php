@@ -17,10 +17,18 @@ try {
 }
 
 $stmt = $pdo->query(
-    'SELECT name, species, morph, locality, gender, date_of_birth,
-            sire, dame, weight_g, price, available, description, photo, obtained_from
-     FROM lizards
-     ORDER BY id'
+    'SELECT l.name, l.species, l.morph, l.locality, l.gender, l.date_of_birth,
+            l.sire, l.dame, l.weight_g, l.price, l.available, l.description, l.obtained_from,
+            GROUP_CONCAT(i.filename ORDER BY i.sort_order SEPARATOR \'|\') AS photos
+     FROM lizards l
+     LEFT JOIN lizard_images i ON i.lizard_id = l.id
+     GROUP BY l.id
+     ORDER BY l.id'
 );
 
-echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+$lizards = array_map(function ($row) {
+    $row['photos'] = $row['photos'] ? explode('|', $row['photos']) : [];
+    return $row;
+}, $stmt->fetchAll(PDO::FETCH_ASSOC));
+
+echo json_encode($lizards);

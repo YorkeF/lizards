@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useLizards } from '../../hooks/useLizards';
 import { fetchSlugHistory } from '../../utils/slugHistory';
+import { Slideshow } from '../../components/Slideshow/Slideshow';
 import styles from './LizardProfile.module.css';
 
 function age(dob: string): string {
@@ -48,11 +49,6 @@ export function LizardProfile() {
     );
   }
 
-  const base = import.meta.env.BASE_URL;
-  const imgSrc = lizard.photo
-    ? `${base}images/${lizard.photo}`
-    : `${base}images/placeholder.svg`;
-
   const sireRecord = lizard.sire
     ? lizards.find(l => l.name.toLowerCase() === lizard.sire.toLowerCase())
     : null;
@@ -71,13 +67,7 @@ export function LizardProfile() {
       <Link to="/" className={styles.back}>← Back to store</Link>
 
       <div className={styles.hero}>
-        <div className={styles.imageWrap}>
-          <img
-            src={imgSrc}
-            alt={lizard.name}
-            onError={e => { (e.target as HTMLImageElement).src = `${base}images/placeholder.svg`; }}
-          />
-        </div>
+        <Slideshow photos={lizard.photos} alt={lizard.name} />
         <div className={styles.header}>
           <h1>{lizard.name}</h1>
           <p className={styles.sub}>

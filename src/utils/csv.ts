@@ -60,7 +60,7 @@ export function parseLizards(csvText: string): Lizard[] {
       price: parseNumber(row.Price ?? ''),
       available: parseAvailable(row.Available ?? ''),
       description: (row.Description ?? '').trim(),
-      photo: (row.Photo ?? '').trim(),
+      photos: (row.Photo ?? '').trim() ? [(row.Photo ?? '').trim()] : [],
       obtainedFrom: (row['Obtained From'] ?? '').trim(),
     };
   });
@@ -80,7 +80,7 @@ export function unparseLizards(lizards: Lizard[]): string {
     Price: l.price !== null ? String(l.price) : '',
     Available: l.available ? 'Yes' : 'No',
     Description: l.description,
-    Photo: l.photo,
+    Photo: l.photos[0] ?? '',
     'Obtained From': l.obtainedFrom,
   }));
 
@@ -113,7 +113,7 @@ export async function fetchLizards(): Promise<Lizard[]> {
       price: row.price !== null ? Number(row.price) : null,
       available: Boolean(row.available),
       description: String(row.description ?? ''),
-      photo: String(row.photo ?? ''),
+      photos: Array.isArray(row.photos) ? (row.photos as string[]) : [],
       obtainedFrom: String(row.obtained_from ?? ''),
     };
   });

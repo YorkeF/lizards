@@ -8,8 +8,8 @@ interface Props {
 
 export function LizardCard({ lizard }: Props) {
   const base = import.meta.env.BASE_URL;
-  const imgSrc = lizard.photo
-    ? `${base}images/${lizard.photo}`
+  const imgSrc = lizard.photos.length > 0
+    ? `${base}images/${lizard.photos[0]}`
     : `${base}images/placeholder.svg`;
 
   return (
