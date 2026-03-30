@@ -88,10 +88,33 @@ export function unparseLizards(lizards: Lizard[]): string {
 }
 
 export async function fetchLizards(): Promise<Lizard[]> {
-  const base = import.meta.env.BASE_URL;
-  const url = `${base}data/lizards.csv`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed to fetch lizards.csv: ${res.status}`);
-  const text = await res.text();
-  return parseLizards(text);
+  const res = await fetch('/api/lizards.php');
+  if (!res.ok) throw new Error(`Failed to fetch lizards: ${res.status}`);
+  const rows: Array<Record<string, string | number | null>> = await res.json();
+
+  const slugsSeen = new Map<string, number>();
+  return rows.map((row): Lizard => {
+    const name = String(row.name ?? '');
+    const species = String(row.species ?? '');
+    const gender = String(row.gender ?? '');
+    const dateOfBirth = String(row.date_of_birth ?? '');
+    const slug = deduplicateSlug(toLizardSlug(name, species, gender, dateOfBirth), slugsSeen);
+    return {
+      slug,
+      name,
+      species,
+      morph: String(row.morph ?? ''),
+      locality: String(row.locality ?? ''),
+      gender,
+      dateOfBirth,
+      sire: String(row.sire ?? ''),
+      dame: String(row.dame ?? ''),
+      weightG: row.weight_g !== null ? Number(row.weight_g) : null,
+      price: row.price !== null ? Number(row.price) : null,
+      available: Boolean(row.available),
+      description: String(row.description ?? ''),
+      photo: String(row.photo ?? ''),
+      obtainedFrom: String(row.obtained_from ?? ''),
+    };
+  });
 }

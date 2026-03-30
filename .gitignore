@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Server config with credentials (never commit)
+server/config.php
+config.php
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
