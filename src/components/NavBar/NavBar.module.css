@@ -8,16 +8,20 @@
 }
 
 .brand {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  color: var(--color-sunshine);
+  display: flex;
+  align-items: center;
   text-decoration: none;
-  letter-spacing: 0.02em;
 }
 
-.brand:hover {
-  color: var(--color-daiquiri);
-  text-decoration: none;
+.logo {
+  height: 52px;
+  width: auto;
+  mix-blend-mode: multiply;
+  transition: opacity 0.15s;
+}
+
+.brand:hover .logo {
+  opacity: 0.85;
 }
 
 .links {
