@@ -24,6 +24,28 @@ export interface Lizard {
   hideWeightHistory: boolean;
 }
 
+export interface Isopod {
+  id: number;
+  name: string;
+  scientificName: string;
+  description: string;
+  price: number | null;
+  available: boolean;
+  obtainedFrom: string;
+  photos: string[];
+}
+
+export interface Plant {
+  id: number;
+  name: string;
+  scientificName: string;
+  description: string;
+  price: number | null;
+  available: boolean;
+  obtainedFrom: string;
+  photos: string[];
+}
+
 export interface TreeNode {
   lizard: Lizard | null; // null = referenced but not in CSV ("ghost" node)
   name: string;

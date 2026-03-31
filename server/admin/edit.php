@@ -220,6 +220,7 @@ $title = $id ? 'Edit Lizard' : 'Add Lizard';
 </style>
 </head>
 <body>
+<?php require_once '_nav.php'; ?>
 
 <!-- ── Fields form ── -->
 <div class="card">
