@@ -21,7 +21,7 @@ export function Breeders() {
       ) : (
         <div className={styles.grid}>
           {breeders.map(l => (
-            <LizardCard key={l.slug} lizard={l} />
+            <LizardCard key={l.slug} lizard={l} hideFooter />
           ))}
         </div>
       )}
