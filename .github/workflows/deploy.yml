@@ -18,6 +18,9 @@ jobs:
       - run: npm ci
       - run: npm run build
 
+      - name: Install rsync
+        run: sudo apt-get install -y rsync
+
       - name: Deploy via rsync
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
