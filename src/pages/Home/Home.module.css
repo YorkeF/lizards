@@ -8,20 +8,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--space-8) 0 var(--space-6);
-  gap: var(--space-3);
+  padding: var(--space-8) var(--space-6);
+  gap: var(--space-4);
+  background: var(--color-sunshine);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6);
 }
 
 .heroBadge {
   width: 200px;
   height: auto;
-  mix-blend-mode: multiply;
 }
 
 .tagline {
-  color: var(--color-text-muted);
+  color: var(--color-rosin);
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin: 0;

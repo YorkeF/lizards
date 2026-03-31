@@ -14,9 +14,9 @@
 }
 
 .logo {
-  height: 52px;
+  height: 80px;
   width: auto;
-  mix-blend-mode: multiply;
+  border-radius: var(--radius-md);
   transition: opacity 0.15s;
 }
 

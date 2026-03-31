@@ -12,7 +12,7 @@ export function Home() {
     <main className={styles.main}>
       <div className={styles.hero}>
         <img src="/images/logo-badge.png" alt="Lichen Leachies" className={styles.heroBadge} />
-        <p className={styles.tagline}>Quality crested geckos &amp; chahouas</p>
+        <p className={styles.tagline}>Quality leachianus &amp; chahouas</p>
       </div>
       <h1 className={styles.title}>Available Lizards</h1>
       {lizards.length === 0 ? (

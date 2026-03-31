@@ -29,20 +29,3 @@ export interface TreeNode {
   dame: TreeNode | null;
 }
 
-// Raw row as PapaParse sees it from the CSV header names
-export interface RawLizardRow {
-  Name: string;
-  Species: string;
-  Morph: string;
-  Locality: string;
-  Gender: string;
-  'Date of Birth': string;
-  Sire: string;
-  Dame: string;
-  'Weight (g)': string;
-  Price: string;
-  Available: string;
-  Description: string;
-  Photo: string;
-  'Obtained From': string;
-}
