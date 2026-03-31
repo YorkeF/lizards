@@ -1,3 +1,8 @@
+export interface WeightEntry {
+  date: string;    // ISO date string, e.g. "2024-06-01"
+  weightG: number;
+}
+
 export interface Lizard {
   slug: string;
   name: string;
@@ -14,6 +19,7 @@ export interface Lizard {
   description: string;
   photos: string[];
   obtainedFrom: string;
+  weightHistory: WeightEntry[];
 }
 
 export interface TreeNode {

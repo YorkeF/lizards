@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import type { Lizard, RawLizardRow } from '../types';
+import type { Lizard, RawLizardRow, WeightEntry } from '../types';
 import { toLizardSlug } from './slugs';
 
 const EXPECTED_HEADERS = [
@@ -62,6 +62,7 @@ export function parseLizards(csvText: string): Lizard[] {
       description: (row.Description ?? '').trim(),
       photos: (row.Photo ?? '').trim() ? [(row.Photo ?? '').trim()] : [],
       obtainedFrom: (row['Obtained From'] ?? '').trim(),
+      weightHistory: [],
     };
   });
 }
@@ -115,6 +116,11 @@ export async function fetchLizards(): Promise<Lizard[]> {
       description: String(row.description ?? ''),
       photos: Array.isArray(row.photos) ? (row.photos as string[]) : [],
       obtainedFrom: String(row.obtained_from ?? ''),
+      weightHistory: Array.isArray(row.weight_history)
+        ? (row.weight_history as Array<{ date: string; weight_g: number }>).map(
+            (e): WeightEntry => ({ date: e.date, weightG: e.weight_g }),
+          )
+        : [],
     };
   });
 }

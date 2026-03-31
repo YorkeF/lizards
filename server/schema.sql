@@ -26,3 +26,34 @@ CREATE TABLE IF NOT EXISTS lizard_images (
   sort_order INT NOT NULL DEFAULT 0,
   FOREIGN KEY (lizard_id) REFERENCES lizards(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS lizard_weights (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  lizard_id  INT   NOT NULL,
+  weighed_on DATE  NOT NULL,
+  weight_g   FLOAT NOT NULL,
+  FOREIGN KEY (lizard_id) REFERENCES lizards(id) ON DELETE CASCADE,
+  UNIQUE KEY uq_lizard_date (lizard_id, weighed_on)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TRIGGER IF NOT EXISTS trg_weights_after_insert
+AFTER INSERT ON lizard_weights
+FOR EACH ROW
+  UPDATE lizards
+  SET weight_g = (
+    SELECT weight_g FROM lizard_weights
+    WHERE lizard_id = NEW.lizard_id
+    ORDER BY weighed_on DESC LIMIT 1
+  )
+  WHERE id = NEW.lizard_id;
+
+CREATE TRIGGER IF NOT EXISTS trg_weights_after_delete
+AFTER DELETE ON lizard_weights
+FOR EACH ROW
+  UPDATE lizards
+  SET weight_g = (
+    SELECT weight_g FROM lizard_weights
+    WHERE lizard_id = OLD.lizard_id
+    ORDER BY weighed_on DESC LIMIT 1
+  )
+  WHERE id = OLD.lizard_id;

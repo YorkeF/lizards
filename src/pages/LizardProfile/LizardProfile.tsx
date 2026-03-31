@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useLizards } from '../../hooks/useLizards';
 import { fetchSlugHistory } from '../../utils/slugHistory';
 import { Slideshow } from '../../components/Slideshow/Slideshow';
+import { WeightChart } from '../../components/WeightChart/WeightChart';
 import styles from './LizardProfile.module.css';
 
 function age(dob: string): string {
@@ -132,6 +133,13 @@ export function LizardProfile() {
                 </li>
               ))}
             </ul>
+          </section>
+        )}
+
+        {lizard.weightHistory.length >= 2 && (
+          <section className={`${styles.section} ${styles.wide}`}>
+            <h2>Weight Over Time</h2>
+            <WeightChart entries={lizard.weightHistory} />
           </section>
         )}
 

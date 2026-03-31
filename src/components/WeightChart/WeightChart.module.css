@@ -1,0 +1,32 @@
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+.grid {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.line {
+  fill: none;
+  stroke: var(--color-daiquiri);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.dot {
+  fill: var(--color-daiquiri);
+  stroke: var(--color-surface);
+  stroke-width: 2;
+  cursor: default;
+}
+
+.axisLabel {
+  font-size: 10px;
+  fill: var(--color-text-muted);
+  font-family: var(--font-body, system-ui, sans-serif);
+}

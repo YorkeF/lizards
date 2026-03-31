@@ -17,7 +17,7 @@ try {
 }
 
 $stmt = $pdo->query(
-    'SELECT l.name, l.species, l.morph, l.locality, l.gender, l.date_of_birth,
+    'SELECT l.id, l.name, l.species, l.morph, l.locality, l.gender, l.date_of_birth,
             l.sire, l.dame, l.weight_g, l.price, l.available, l.description, l.obtained_from,
             GROUP_CONCAT(i.filename ORDER BY i.sort_order SEPARATOR \'|\') AS photos
      FROM lizards l
@@ -25,10 +25,25 @@ $stmt = $pdo->query(
      GROUP BY l.id
      ORDER BY l.id'
 );
+$lizards = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$lizards = array_map(function ($row) {
-    $row['photos'] = $row['photos'] ? explode('|', $row['photos']) : [];
+$wStmt = $pdo->query(
+    'SELECT lizard_id, weighed_on, weight_g FROM lizard_weights ORDER BY lizard_id, weighed_on ASC'
+);
+$weightsByLizard = [];
+foreach ($wStmt->fetchAll(PDO::FETCH_ASSOC) as $w) {
+    $weightsByLizard[(int)$w['lizard_id']][] = [
+        'date'     => $w['weighed_on'],
+        'weight_g' => (float)$w['weight_g'],
+    ];
+}
+
+$lizards = array_map(function ($row) use ($weightsByLizard) {
+    $lid = (int)$row['id'];
+    unset($row['id']);
+    $row['photos']         = $row['photos'] ? explode('|', $row['photos']) : [];
+    $row['weight_history'] = $weightsByLizard[$lid] ?? [];
     return $row;
-}, $stmt->fetchAll(PDO::FETCH_ASSOC));
+}, $lizards);
 
 echo json_encode($lizards);

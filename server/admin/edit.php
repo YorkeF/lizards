@@ -26,6 +26,40 @@ function getImages(PDO $pdo, int $id): array {
     return $s->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function getWeights(PDO $pdo, int $id): array {
+    $s = $pdo->prepare('SELECT id, weighed_on, weight_g FROM lizard_weights WHERE lizard_id = ? ORDER BY weighed_on ASC');
+    $s->execute([$id]);
+    return $s->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// ── Action: add a weight entry ─────────────────────────────────────────────
+
+if ($action === 'add_weight' && $id && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $weighed_on = trim($_POST['weighed_on'] ?? '');
+    $weight_g   = $_POST['weight_g'] !== '' ? (float)$_POST['weight_g'] : null;
+    if ($weighed_on && $weight_g !== null && $weight_g > 0) {
+        $s = $pdo->prepare(
+            'INSERT INTO lizard_weights (lizard_id, weighed_on, weight_g) VALUES (?, ?, ?)
+             ON DUPLICATE KEY UPDATE weight_g = VALUES(weight_g)'
+        );
+        $s->execute([$id, $weighed_on, $weight_g]);
+    }
+    header("Location: edit.php?id=$id");
+    exit;
+}
+
+// ── Action: delete a weight entry ──────────────────────────────────────────
+
+if ($action === 'delete_weight' && $id) {
+    $weightId = (int)($_GET['weight_id'] ?? 0);
+    if ($weightId) {
+        $s = $pdo->prepare('DELETE FROM lizard_weights WHERE id = ? AND lizard_id = ?');
+        $s->execute([$weightId, $id]);
+    }
+    header("Location: edit.php?id=$id");
+    exit;
+}
+
 // ── Action: delete a single image ──────────────────────────────────────────
 
 if ($action === 'delete_image' && $id) {
@@ -120,7 +154,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action !== 'upload_image') {
 
 $lizard = $id ? getLizard($pdo, $id) : null;
 if ($id && !$lizard) { header('Location: index.php'); exit; }
-$images = $id ? getImages($pdo, $id) : [];
+$images  = $id ? getImages($pdo, $id) : [];
+$weights = $id ? getWeights($pdo, $id) : [];
 
 $v     = $lizard ?? array_fill_keys(['name','species','morph','locality','gender','date_of_birth','sire','dame','weight_g','price','available','description','obtained_from'], '');
 $title = $id ? 'Edit Lizard' : 'Add Lizard';
@@ -171,6 +206,15 @@ $title = $id ? 'Edit Lizard' : 'Add Lizard';
   .upload-zone input[type=file] { margin-top: .75rem; }
   .empty-images { color: #9ca3af; font-size: .875rem; margin-bottom: 1rem; }
   .note { font-size: .8rem; color: #9ca3af; margin-top: .5rem; }
+
+  /* Weight history table */
+  .weight-table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: .9rem; }
+  .weight-table th { text-align: left; font-size: .8rem; color: #6b7280; font-weight: 600; padding: .4rem .5rem; border-bottom: 1px solid #e5e7eb; }
+  .weight-table td { padding: .5rem .5rem; border-bottom: 1px solid #f3f4f6; }
+  .weight-table tr:last-child td { border-bottom: none; }
+  .btn-danger-sm { background: rgba(220,38,38,.1); color: #dc2626; border: none; border-radius: 4px; padding: 2px 8px; font-size: .75rem; cursor: pointer; font-weight: 600; text-decoration: none; }
+  .btn-danger-sm:hover { background: #dc2626; color: #fff; }
+  .weight-add { display: grid; grid-template-columns: 1fr 1fr auto; gap: .75rem; align-items: end; margin-top: 1rem; }
 </style>
 </head>
 <body>
@@ -222,9 +266,10 @@ $title = $id ? 'Edit Lizard' : 'Add Lizard';
         <input type="text" id="dame" name="dame" value="<?= htmlspecialchars($v['dame']) ?>">
       </div>
       <div>
-        <label for="weight_g">Weight (g)</label>
+        <label for="weight_g">Weight (g) <?= $id ? '<span style="font-weight:400;color:#9ca3af">(auto-updated by history)</span>' : '' ?></label>
         <input type="number" id="weight_g" name="weight_g" step="0.1"
-               value="<?= $v['weight_g'] !== null && $v['weight_g'] !== '' ? htmlspecialchars((string)$v['weight_g']) : '' ?>">
+               value="<?= $v['weight_g'] !== null && $v['weight_g'] !== '' ? htmlspecialchars((string)$v['weight_g']) : '' ?>"
+               <?= $id ? 'readonly style="background:#f9fafb;color:#6b7280"' : '' ?>>
       </div>
       <div>
         <label for="price">Price ($)</label>
@@ -287,6 +332,54 @@ $title = $id ? 'Edit Lizard' : 'Add Lizard';
 <?php else: ?>
 <div class="card">
   <p class="note">Save the lizard first, then you can add photos.</p>
+</div>
+<?php endif; ?>
+
+<!-- ── Weight History (only shown after lizard exists) ── -->
+<?php if ($id): ?>
+<div class="card">
+  <h2>Weight History</h2>
+
+  <?php if (empty($weights)): ?>
+    <p class="empty-images">No weight entries yet.</p>
+  <?php else: ?>
+    <table class="weight-table">
+      <thead>
+        <tr><th>Date</th><th>Weight (g)</th><th></th></tr>
+      </thead>
+      <tbody>
+        <?php foreach ($weights as $w): ?>
+          <tr>
+            <td><?= htmlspecialchars($w['weighed_on']) ?></td>
+            <td><?= htmlspecialchars((string)$w['weight_g']) ?>g</td>
+            <td>
+              <a href="edit.php?id=<?= $id ?>&action=delete_weight&weight_id=<?= $w['id'] ?>"
+                 class="btn-danger-sm"
+                 onclick="return confirm('Remove this weight entry?')">✕</a>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  <?php endif; ?>
+
+  <form method="post" action="edit.php?id=<?= $id ?>&action=add_weight">
+    <div class="weight-add">
+      <div>
+        <label>Date</label>
+        <input type="date" name="weighed_on" required>
+      </div>
+      <div>
+        <label>Weight (g)</label>
+        <input type="number" name="weight_g" step="0.1" min="0.1" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+  </form>
+</div>
+<?php else: ?>
+<div class="card">
+  <p class="note">Save the lizard first, then you can record weight history.</p>
 </div>
 <?php endif; ?>
 
