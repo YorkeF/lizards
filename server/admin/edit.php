@@ -128,6 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action !== 'upload_image') {
         'price'         => $_POST['price']    !== '' ? (float)$_POST['price']    : null,
         'available'            => isset($_POST['available'])            ? 1 : 0,
         'is_breeder'           => isset($_POST['is_breeder'])           ? 1 : 0,
+        'paired_with'   => trim($_POST['paired_with'] ?? ''),
         'hide_weight_history'  => isset($_POST['hide_weight_history'])  ? 1 : 0,
         'description'   => trim($_POST['description'] ?? ''),
         'obtained_from' => trim($_POST['obtained_from'] ?? ''),
@@ -159,7 +160,7 @@ if ($id && !$lizard) { header('Location: index.php'); exit; }
 $images  = $id ? getImages($pdo, $id) : [];
 $weights = $id ? getWeights($pdo, $id) : [];
 
-$v     = $lizard ?? array_fill_keys(['name','species','morph','locality','gender','date_of_birth','sire','dame','weight_g','price','available','description','obtained_from'], '');
+$v     = $lizard ?? array_fill_keys(['name','species','morph','locality','gender','date_of_birth','sire','dame','weight_g','price','available','is_breeder','paired_with','description','obtained_from'], '');
 $title = $id ? 'Edit Lizard' : 'Add Lizard';
 ?>
 <!DOCTYPE html>
@@ -290,6 +291,10 @@ $title = $id ? 'Edit Lizard' : 'Add Lizard';
       <div class="checkbox-row">
         <input type="checkbox" id="is_breeder" name="is_breeder" <?= !empty($v['is_breeder']) ? 'checked' : '' ?>>
         <label for="is_breeder" style="margin:0">Breeder (never for sale — shown on Breeders page)</label>
+      </div>
+      <div>
+        <label for="paired_with">Paired With (name of breeding partner)</label>
+        <input type="text" id="paired_with" name="paired_with" value="<?= htmlspecialchars($v['paired_with'] ?? '') ?>">
       </div>
       <div class="checkbox-row">
         <input type="checkbox" id="hide_weight_history" name="hide_weight_history" <?= !empty($v['hide_weight_history']) ? 'checked' : '' ?>>

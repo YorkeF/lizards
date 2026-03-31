@@ -65,6 +65,17 @@
   margin-bottom: var(--space-3);
 }
 
+.breeder {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-text-on-accent);
+  background: var(--color-daiquiri);
+  padding: 3px 12px;
+  border-radius: var(--radius-xl);
+  margin-bottom: var(--space-3);
+}
+
 .unavailable {
   display: inline-block;
   font-size: 0.82rem;

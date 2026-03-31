@@ -74,10 +74,14 @@ export function LizardProfile() {
           <p className={styles.sub}>
             {lizard.species}{lizard.morph ? ` · ${lizard.morph}` : ''}
           </p>
-          <span className={lizard.available ? styles.available : styles.unavailable}>
-            {lizard.available ? 'Available' : 'Not Available'}
-          </span>
-          {lizard.price !== null && (
+          {lizard.isBreeder ? (
+            <span className={styles.breeder}>Breeder</span>
+          ) : (
+            <span className={lizard.available ? styles.available : styles.unavailable}>
+              {lizard.available ? 'Available' : 'Not Available'}
+            </span>
+          )}
+          {!lizard.isBreeder && lizard.price !== null && (
             <p className={styles.price}>${lizard.price}</p>
           )}
         </div>
@@ -97,6 +101,16 @@ export function LizardProfile() {
             <dd>{lizard.weightG !== null ? `${lizard.weightG}g` : '—'}</dd>
             {lizard.locality && <><dt>Locality</dt><dd>{lizard.locality}</dd></>}
             {lizard.obtainedFrom && <><dt>Obtained From</dt><dd>{lizard.obtainedFrom}</dd></>}
+            {lizard.isBreeder && lizard.pairedWith && (() => {
+              const partner = lizards.find(l => l.name.toLowerCase() === lizard.pairedWith.toLowerCase());
+              return (
+                <><dt>Paired With</dt><dd>
+                  {partner
+                    ? <Link to={`/lizard/${partner.slug}`}>{lizard.pairedWith}</Link>
+                    : lizard.pairedWith}
+                </dd></>
+              );
+            })()}
           </dl>
         </section>
 

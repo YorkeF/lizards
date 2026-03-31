@@ -21,6 +21,7 @@ export interface Lizard {
   obtainedFrom: string;
   weightHistory: WeightEntry[];
   isBreeder: boolean;
+  pairedWith: string;
   hideWeightHistory: boolean;
 }
 
