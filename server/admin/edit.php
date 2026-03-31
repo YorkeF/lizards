@@ -126,7 +126,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action !== 'upload_image') {
         'dame'          => trim($_POST['dame'] ?? ''),
         'weight_g'      => $_POST['weight_g'] !== '' ? (float)$_POST['weight_g'] : null,
         'price'         => $_POST['price']    !== '' ? (float)$_POST['price']    : null,
-        'available'     => isset($_POST['available']) ? 1 : 0,
+        'available'            => isset($_POST['available'])            ? 1 : 0,
+        'is_breeder'           => isset($_POST['is_breeder'])           ? 1 : 0,
+        'hide_weight_history'  => isset($_POST['hide_weight_history'])  ? 1 : 0,
         'description'   => trim($_POST['description'] ?? ''),
         'obtained_from' => trim($_POST['obtained_from'] ?? ''),
     ];
@@ -283,6 +285,14 @@ $title = $id ? 'Edit Lizard' : 'Add Lizard';
       <div class="checkbox-row">
         <input type="checkbox" id="available" name="available" <?= $v['available'] ? 'checked' : '' ?>>
         <label for="available" style="margin:0">Available for sale</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="is_breeder" name="is_breeder" <?= !empty($v['is_breeder']) ? 'checked' : '' ?>>
+        <label for="is_breeder" style="margin:0">Breeder (never for sale — shown on Breeders page)</label>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="hide_weight_history" name="hide_weight_history" <?= !empty($v['hide_weight_history']) ? 'checked' : '' ?>>
+        <label for="hide_weight_history" style="margin:0">Hide weight history chart on profile</label>
       </div>
       <div class="full">
         <label for="description">Description</label>

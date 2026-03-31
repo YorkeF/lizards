@@ -35,6 +35,8 @@ export async function fetchLizards(): Promise<Lizard[]> {
       description: String(row.description ?? ''),
       photos: Array.isArray(row.photos) ? (row.photos as string[]) : [],
       obtainedFrom: String(row.obtained_from ?? ''),
+      isBreeder: Boolean(row.is_breeder),
+      hideWeightHistory: Boolean(row.hide_weight_history),
       weightHistory: Array.isArray(row.weight_history)
         ? (row.weight_history as Array<{ date: string; weight_g: number }>).map(
             (e): WeightEntry => ({ date: e.date, weightG: e.weight_g }),

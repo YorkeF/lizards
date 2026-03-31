@@ -20,6 +20,8 @@ export interface Lizard {
   photos: string[];
   obtainedFrom: string;
   weightHistory: WeightEntry[];
+  isBreeder: boolean;
+  hideWeightHistory: boolean;
 }
 
 export interface TreeNode {

@@ -19,6 +19,7 @@ try {
 $stmt = $pdo->query(
     'SELECT l.id, l.name, l.species, l.morph, l.locality, l.gender, l.date_of_birth,
             l.sire, l.dame, l.weight_g, l.price, l.available, l.description, l.obtained_from,
+            l.is_breeder, l.hide_weight_history,
             GROUP_CONCAT(i.filename ORDER BY i.sort_order SEPARATOR \'|\') AS photos
      FROM lizards l
      LEFT JOIN lizard_images i ON i.lizard_id = l.id

@@ -136,7 +136,7 @@ export function LizardProfile() {
           </section>
         )}
 
-        {lizard.weightHistory.length >= 2 && (
+        {!lizard.hideWeightHistory && lizard.weightHistory.length >= 2 && (
           <section className={`${styles.section} ${styles.wide}`}>
             <h2>Weight Over Time</h2>
             <WeightChart entries={lizard.weightHistory} />

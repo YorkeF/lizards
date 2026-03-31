@@ -13,10 +13,12 @@ CREATE TABLE IF NOT EXISTS lizards (
   dame           VARCHAR(255)  NOT NULL DEFAULT '',
   weight_g       FLOAT                  DEFAULT NULL,
   price          FLOAT                  DEFAULT NULL,
-  available      TINYINT(1)    NOT NULL DEFAULT 0,
-  description    TEXT          NOT NULL DEFAULT '',
-  photo          VARCHAR(1000) NOT NULL DEFAULT '',
-  obtained_from  VARCHAR(255)  NOT NULL DEFAULT ''
+  available             TINYINT(1)    NOT NULL DEFAULT 0,
+  description           TEXT          NOT NULL DEFAULT '',
+  photo                 VARCHAR(1000) NOT NULL DEFAULT '',
+  obtained_from         VARCHAR(255)  NOT NULL DEFAULT '',
+  is_breeder            TINYINT(1)    NOT NULL DEFAULT 0,
+  hide_weight_history   TINYINT(1)    NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS lizard_images (

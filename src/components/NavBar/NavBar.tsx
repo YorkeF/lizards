@@ -11,6 +11,9 @@ export function NavBar() {
         <NavLink to="/" end className={({ isActive }) => isActive ? styles.active : ''}>
           Store
         </NavLink>
+        <NavLink to="/breeders" className={({ isActive }) => isActive ? styles.active : ''}>
+          Breeders
+        </NavLink>
         <NavLink to="/family-tree" className={({ isActive }) => isActive ? styles.active : ''}>
           Family Tree
         </NavLink>
