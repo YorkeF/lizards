@@ -35,5 +35,3 @@ jobs:
           scp -i ~/.ssh/deploy_key -P "$SSH_PORT" -r dist/. $SSH_USER@$SSH_HOST:~/www/
           scp -i ~/.ssh/deploy_key -P "$SSH_PORT" -r server/admin/. $SSH_USER@$SSH_HOST:~/www/admin/
           scp -i ~/.ssh/deploy_key -P "$SSH_PORT" -r server/api/. $SSH_USER@$SSH_HOST:~/www/api/
-
-          ssh -i ~/.ssh/deploy_key -p "$SSH_PORT" $SSH_USER@$SSH_HOST "cd ~/lizards && git pull"
